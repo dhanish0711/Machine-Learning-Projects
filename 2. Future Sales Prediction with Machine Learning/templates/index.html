@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Future Sales Prediction</title>
+    <meta name="description" content="Predict future sales based on advertising spend using machine learning." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+    <!-- Animated background -->
+    <div class="bg-mesh"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <main class="container">
+        <!-- Hero Header -->
+        <header class="hero">
+            <div class="logo-wrap">
+                <div class="logo-orbit"></div>
+                <div class="logo-core">📈</div>
+            </div>
+            <h1 class="title">Future Sales <span class="gradient-text">Predictor</span></h1>
+            <p class="tagline">
+                <span class="tag-pill">Machine Learning</span>
+                <span class="tag-pill">Linear Regression</span>
+            </p>
+        </header>
+
+        <!-- Prediction Result -->
+        {% if prediction is defined and prediction is not none %}
+        <section class="result-card" id="result-section">
+            <div class="result-glow"></div>
+            <div class="result-inner">
+                <div class="result-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                    Predicted Sales
+                </div>
+                <div class="result-number">{{ prediction }}</div>
+                <div class="result-unit-label">thousand units</div>
+                <div class="result-breakdown">
+                    <div class="breakdown-item">
+                        <span class="breakdown-icon">📺</span>
+                        <span class="breakdown-label">TV</span>
+                        <span class="breakdown-val">${{ tv }}k</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-icon">📻</span>
+                        <span class="breakdown-label">Radio</span>
+                        <span class="breakdown-val">${{ radio }}k</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-icon">📰</span>
+                        <span class="breakdown-label">Newspaper</span>
+                        <span class="breakdown-val">${{ newspaper }}k</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Model Metrics -->
+        {% if metrics %}
+        <section class="metrics-row">
+            <div class="metric-card metric-r2">
+                <div class="metric-bar" style="--bar-width: {{ metrics.r2 }}%"></div>
+                <div class="metric-body">
+                    <span class="metric-num">{{ metrics.r2 }}%</span>
+                    <span class="metric-name">R² Accuracy</span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-body">
+                    <span class="metric-num">{{ metrics.mae }}</span>
+                    <span class="metric-name">MAE</span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-body">
+                    <span class="metric-num">{{ metrics.rmse }}</span>
+                    <span class="metric-name">RMSE</span>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Prediction Form -->
+        <section class="form-card">
+            <div class="form-header">
+                <h2>Advertising Budget</h2>
+                <p>Enter spend across channels to forecast sales</p>
+            </div>
+
+            <form action="/predict" method="POST" class="form" id="predict-form">
+                <!-- TV — hero input -->
+                <div class="input-group input-hero">
+                    <div class="input-label-row">
+                        <span class="input-icon">📺</span>
+                        <label for="tv">TV Advertising</label>
+                    </div>
+                    <div class="input-field">
+                        <span class="currency">$</span>
+                        <input type="number" id="tv" name="tv" step="0.1" min="0" placeholder="230.1"
+                            value="{{ tv if tv is defined else '' }}" required />
+                        <span class="unit-tag">× $1,000</span>
+                    </div>
+                    <div class="input-hint">Strongest predictor of sales</div>
+                </div>
+
+                <!-- Radio & Newspaper -->
+                <div class="input-duo">
+                    <div class="input-group">
+                        <div class="input-label-row">
+                            <span class="input-icon">📻</span>
+                            <label for="radio">Radio</label>
+                        </div>
+                        <div class="input-field">
+                            <span class="currency">$</span>
+                            <input type="number" id="radio" name="radio" step="0.1" min="0" placeholder="37.8"
+                                value="{{ radio if radio is defined else '' }}" required />
+                            <span class="unit-tag">× $1k</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-label-row">
+                            <span class="input-icon">📰</span>
+                            <label for="newspaper">Newspaper</label>
+                        </div>
+                        <div class="input-field">
+                            <span class="currency">$</span>
+                            <input type="number" id="newspaper" name="newspaper" step="0.1" min="0" placeholder="69.2"
+                                value="{{ newspaper if newspaper is defined else '' }}" required />
+                            <span class="unit-tag">× $1k</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-predict" id="predict-btn">
+                    <span class="btn-shimmer"></span>
+                    <span class="btn-content">
+                        <span>Predict Sales</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round" class="btn-arrow">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
+                </button>
+            </form>
+        </section>
+
+        <footer class="footer">
+            <p>Trained on <strong>200</strong> advertising records&ensp;·&ensp;scikit-learn LinearRegression</p>
+        </footer>
+    </main>
+
+    <script>
+        // Ripple on button
+        document.querySelector('.btn-predict')?.addEventListener('click', function (e) {
+            const r = document.createElement('span');
+            r.classList.add('ripple');
+            const rect = this.getBoundingClientRect();
+            r.style.left = (e.clientX - rect.left) + 'px';
+            r.style.top = (e.clientY - rect.top) + 'px';
+            this.appendChild(r);
+            setTimeout(() => r.remove(), 700);
+        });
+        // Scroll to result
+        const rs = document.getElementById('result-section');
+        if (rs) rs.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    </script>
+</body>
+
+</html>
