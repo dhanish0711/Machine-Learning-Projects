@@ -3,7 +3,7 @@
 A curated collection of end-to-end Machine Learning projects — from data exploration and model training to deployment-ready web apps. Each project lives in its own folder with a dedicated README, dataset, and source code.
 
 [![GitHub](https://img.shields.io/badge/GitHub-dhanish0711-181717?logo=github&logoColor=white)](https://github.com/dhanish0711)
-![Projects](https://img.shields.io/badge/Projects-1%20%2F%2020-blue)
+![Projects](https://img.shields.io/badge/Projects-2%20%2F%2020-blue)
 ![Python](https://img.shields.io/badge/Python-3.8+-3776AB?logo=python&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
@@ -14,7 +14,7 @@ A curated collection of end-to-end Machine Learning projects — from data explo
 | # | Project | Description | Tech Stack |
 |---|---------|-------------|------------|
 | 1 | [Waiter Tips Prediction](./1.%20Waiter%20Tips%20Prediction%20with%20Machine%20Learning) | Predict restaurant tips using Linear Regression with a Flask web app | Flask, scikit-learn, pandas |
-| 2 | *Coming Soon* | — | — |
+| 2 | [Future Sales Prediction](./2.%20Future%20Sales%20Prediction%20with%20Machine%20Learning) | Predict product sales from TV, Radio & Newspaper ad spend using Linear Regression with a Flask web app | Flask, scikit-learn, pandas |
 | 3 | *Coming Soon* | — | — |
 | 4 | *Coming Soon* | — | — |
 | 5 | *Coming Soon* | — | — |
